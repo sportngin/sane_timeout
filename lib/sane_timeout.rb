@@ -21,12 +21,8 @@
 # Copyright:: (C) 2000  Network Applied Communication Laboratory, Inc.
 # Copyright:: (C) 2000  Information-technology Promotion Agency, Japan
 
-module Timeout
-  # Raised by Timeout#timeout when the block times out.
-  class Error < RuntimeError
-  end
-  class ExitException < ::Exception # :nodoc:
-  end
+module SaneTimeout
+  ExitException = Class.new(::Exception) # :nodoc:
 
   # :stopdoc:
   THIS_FILE = /\A#{Regexp.quote(__FILE__)}:/o
@@ -84,7 +80,7 @@ module Timeout
       end
       raise if klass            # if exception class is specified, it
                                 # would be expected outside.
-      raise Error, e.message, e.backtrace
+      raise Timeout::Error, e.message, e.backtrace
     end
   end
 
@@ -103,4 +99,3 @@ end
 
 # Another name for Timeout::Error, defined for backwards compatibility with
 # earlier versions of timeout.rb.
-TimeoutError = Timeout::Error
