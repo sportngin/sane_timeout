@@ -69,7 +69,7 @@ class TestTimeout < MiniTest::Unit::TestCase
     $raised_in_outer=nil
     $not_raised_in_outer=nil
     begin
-      SaneTimeout.timeout(0.1, throws){
+      Timeout.timeout(0.1, throws){
         begin
           $inner_attempted=true
           sleep 10
