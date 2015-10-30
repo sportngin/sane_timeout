@@ -1,10 +1,11 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require './lib/sane_timeout/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "sane_timeout"
-  gem.version       = '0.1'
+  gem.version       = SaneTimeout::VERSION
   gem.authors       = ["John Joseph Bachir"]
   gem.email         = ["john@ganxy.com"]
   gem.description   = %q{Sane Timeout fixes Ruby standard lib Timeout}
