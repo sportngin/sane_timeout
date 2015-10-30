@@ -1,14 +1,12 @@
-require 'test/unit'
-require 'timeout'
-require 'thread'
+require_relative 'test_helper'
 
-class TestTimeout < Test::Unit::TestCase
+class TestTimeout < MiniTest::Unit::TestCase
 
   ### Tests that come with standard lib
 
   def test_queue
     q = Queue.new
-    assert_raise(Timeout::Error, "[ruby-dev:32935]") {
+    assert_raises(Timeout::Error, "[ruby-dev:32935]") {
       timeout(0.1) { q.pop }
     }
   end
@@ -20,7 +18,7 @@ class TestTimeout < Test::Unit::TestCase
       @flag = false
     }
     assert_nothing_raised("[ruby-dev:38319]") do
-      Timeout.timeout(1) {
+      SaneTimeout.timeout(1) {
         nil while @flag
       }
     end
@@ -30,7 +28,7 @@ class TestTimeout < Test::Unit::TestCase
   def test_cannot_convert_into_time_interval
     bug3168 = '[ruby-dev:41010]'
     def (n = Object.new).zero?; false; end
-    assert_raise(TypeError, bug3168) {Timeout.timeout(n) { sleep 0.1 }}
+    assert_raises(TypeError, bug3168) {SaneTimeout.timeout(n) { sleep 0.1 }}
   end
 
 
@@ -38,22 +36,22 @@ class TestTimeout < Test::Unit::TestCase
 
   def test_non_timing_out_code_is_successful
     assert_nothing_raised do
-      Timeout.timeout(2) {
+      SaneTimeout.timeout(2) {
         true
       }
     end
   end
 
   def test_code_that_takes_too_long_is_stopped_and_raises
-    assert_raise(Timeout::Error) do
-      Timeout.timeout(0.1) {
+    assert_raises(Timeout::Error) do
+      SaneTimeout.timeout(0.1) {
         sleep 10
       }
     end
   end
 
   def test_returns_block_value_when_not_timing_out
-    retval = Timeout.timeout(1){ "foobar" }
+    retval = SaneTimeout.timeout(1){ "foobar" }
     assert_equal "foobar", retval
   end
 
