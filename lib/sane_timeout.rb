@@ -87,15 +87,3 @@ module SaneTimeout
   module_function :timeout
 end
 
-# Identical to:
-#
-#   Timeout::timeout(n, e, &block).
-#
-# This method is deprecated and provided only for backwards compatibility.
-# You should use Timeout#timeout instead.
-def timeout(n, e = nil, &block)
-  Timeout::timeout(n, e, &block)
-end
-
-# Another name for Timeout::Error, defined for backwards compatibility with
-# earlier versions of timeout.rb.
